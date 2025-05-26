@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useDataContext } from "../../hook";
 import HTwo from "../Common/HTwo";
 import Spinner from "../Common/Spinner";
 import ImageGrid from "./ImageGrid";
 import Search from "./Search";
 import Setting from "./Setting";
-export default function CreatePage({ onImageDownload, loading, setLoading }) {
+export default function CreatePage({ onImageDownload }) {
+  /* constex api start */
+  const { loading, setLoading } = useDataContext();
+  /* constex api end */
   /* state manegment start */
   const [prompt, setPrompt] = useState("");
   const [images, setImages] = useState([]);

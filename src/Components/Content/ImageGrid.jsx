@@ -34,7 +34,7 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
 
   if (loading === false && images.length === 0) {
     return (
-      <div className="text-center py-12 text-zinc-400">
+      <div className="text-center py-12 text-zinc-400 text-2xl">
         <p>No images generated yet. Enter a prompt and click generate!</p>
       </div>
     );
@@ -53,8 +53,7 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
             >
               <Button
                 onClick={() => downloadImage(image)}
-                // disabled={downloadingIds.has(image.value.id)}
-                buttonStyle="absolute bottom-2 right-2 p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-all z-10 disabled:opacity-50"
+                buttonStyle="absolute bottom-2 right-2 p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-all z-10 disabled:opacity-50  cursor-pointer"
               >
                 <DownloadSvg />
               </Button>

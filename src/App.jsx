@@ -1,16 +1,11 @@
-import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import CreatePage from "./Components/Content/CreatePage";
 import DownloadPage from "./Components/Content/DownladPage";
 import Glow from "./Components/Glow/Glow";
 import Header from "./Components/Header/Header";
+import { useDataContext } from "./hook";
 export default function App() {
-  /* state manegment start */
-  const [route, setRoute] = useState("create");
-  const [downloadedImages, setDownloadedImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  /* state manegment end */
-
+  const { setDownloadedImages, route, setRoute } = useDataContext();
   const addToDownloads = (image) => {
     setDownloadedImages((prev) => {
       const exists = prev.find((img) => img.value.id === image.value.id);
@@ -24,19 +19,9 @@ export default function App() {
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <Header currentRoute={route} onRouteChange={setRoute} />
       <Glow />
-      {route === "create" && (
-        <CreatePage
-          onImageDownload={addToDownloads}
-          loading={loading}
-          setLoading={setLoading}
-        />
-      )}
+      {route === "create" && <CreatePage onImageDownload={addToDownloads} />}
       {route === "download" && (
-        <DownloadPage
-          downloadedImages={downloadedImages}
-          onImageDownload={addToDownloads}
-          loading={loading}
-        />
+        <DownloadPage onImageDownload={addToDownloads} />
       )}
       <ToastContainer />
     </div>
