@@ -70,7 +70,7 @@ export default function CreatePage({ onImageDownload, loading, setLoading }) {
           const img = new Image();
           const timeoutId = setTimeout(() => {
             reject(new Error("Image load timeout"));
-          }, 10000);
+          }, 1000);
 
           img.onload = () => {
             clearTimeout(timeoutId);

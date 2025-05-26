@@ -13,7 +13,7 @@ export default function App() {
 
   const addToDownloads = (image) => {
     setDownloadedImages((prev) => {
-      const exists = prev.find((img) => img.id === image.id);
+      const exists = prev.find((img) => img.value.id === image.value.id);
       console.log(exists);
 
       if (exists) return prev;

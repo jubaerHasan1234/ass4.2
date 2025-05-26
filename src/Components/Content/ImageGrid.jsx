@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { toast } from "react-toastify";
 import Button from "../Common/Button";
 import DownloadSvg from "../Common/DownloadSvg";
@@ -6,17 +5,8 @@ import ImageLoading from "../Common/ImageLoading";
 import Loading from "../Common/Loading";
 
 const ImageGrid = ({ images, loading, onImageDownload }) => {
-  /* state manegment start */
-  const [downloadingIds, setDownloadingIds] = useState(new Set());
-  /* state manegment end */
-
   /* download function start */
   const downloadImage = async (image) => {
-    console.log(image);
-    if (downloadingIds.has(image.value.id)) return;
-
-    setDownloadingIds((prev) => new Set(prev).add(image.value.id));
-
     try {
       const response = await fetch(image.value.url);
 
@@ -33,17 +23,11 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      onImageDownload(image.value);
+      onImageDownload(image);
       toast.success("Image downloaded successfully!");
     } catch (error) {
       console.error("Failed to download image:", error);
       toast.error("Failed to download image");
-    } finally {
-      setDownloadingIds((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(image.id);
-        return newSet;
-      });
     }
   };
   /* download function end */
@@ -69,14 +53,10 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
             >
               <Button
                 onClick={() => downloadImage(image)}
-                disabled={downloadingIds.has(image.value.id)}
+                // disabled={downloadingIds.has(image.value.id)}
                 buttonStyle="absolute bottom-2 right-2 p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-all z-10 disabled:opacity-50"
               >
-                {downloadingIds.has(image.value.id) ? (
-                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                ) : (
-                  <DownloadSvg />
-                )}
+                <DownloadSvg />
               </Button>
               <img
                 src={image.value.url}
