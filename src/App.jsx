@@ -5,24 +5,14 @@ import Glow from "./Components/Glow/Glow";
 import Header from "./Components/Header/Header";
 import { useDataContext } from "./hook";
 export default function App() {
-  const { setDownloadedImages, route, setRoute } = useDataContext();
-  const addToDownloads = (image) => {
-    setDownloadedImages((prev) => {
-      const exists = prev.find((img) => img.value.id === image.value.id);
-      console.log(exists);
+  const { route } = useDataContext();
 
-      if (exists) return prev;
-      return [...prev, image];
-    });
-  };
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <Header currentRoute={route} onRouteChange={setRoute} />
+      <Header />
       <Glow />
-      {route === "create" && <CreatePage onImageDownload={addToDownloads} />}
-      {route === "download" && (
-        <DownloadPage onImageDownload={addToDownloads} />
-      )}
+      {route === "create" && <CreatePage />}
+      {route === "download" && <DownloadPage />}
       <ToastContainer />
     </div>
   );

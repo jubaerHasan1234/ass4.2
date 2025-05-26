@@ -1,6 +1,8 @@
+import { useDataContext } from "../../hook";
 import logo from "../../images/logo.svg";
 import ATag from "../Common/ATag";
-export default function Header({ currentRoute, onRouteChange }) {
+export default function Header() {
+  const { route, setRoute } = useDataContext();
   return (
     <header className="flex items-center mb-12 justify-between">
       <div className="flex items-center">
@@ -9,10 +11,10 @@ export default function Header({ currentRoute, onRouteChange }) {
       <ul className="ml-4 text-sm text-zinc-400 flex gap-8">
         <ATag
           className={`hover:text-zinc-200 cursor-pointer transition-all ${
-            currentRoute === "create" ? "font-medium text-zinc-200" : ""
+            route === "create" ? "font-medium text-zinc-200" : ""
           }`}
           onClick={(listen) => {
-            onRouteChange("create");
+            setRoute("create");
             listen.preventDefault();
           }}
         >
@@ -20,10 +22,10 @@ export default function Header({ currentRoute, onRouteChange }) {
         </ATag>
         <ATag
           className={`hover:text-zinc-200 cursor-pointer transition-all ${
-            currentRoute === "download" ? "font-medium text-zinc-200" : ""
+            route === "download" ? "font-medium text-zinc-200" : ""
           }`}
           onClick={(listen) => {
-            onRouteChange("download");
+            setRoute("download");
             listen.preventDefault();
           }}
         >

@@ -1,11 +1,23 @@
 import { toast } from "react-toastify";
+import { useDataContext } from "../../hook";
 import Button from "../Common/Button";
 import DownloadSvg from "../Common/DownloadSvg";
 import ImageLoading from "../Common/ImageLoading";
 import Loading from "../Common/Loading";
 
-const ImageGrid = ({ images, loading, onImageDownload }) => {
+const ImageGrid = ({ images }) => {
+  /* contex api start  */
+  const { setDownloadedImages, loading, route } = useDataContext();
+  /* contex api end */
   /* download function start */
+  const addToDownloads = (image) => {
+    setDownloadedImages((prev) => {
+      const exists = prev.find((img) => img.value.id === image.value.id);
+
+      if (exists) return prev;
+      return [...prev, image];
+    });
+  };
   const downloadImage = async (image) => {
     try {
       const response = await fetch(image.value.url);
@@ -23,13 +35,14 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      onImageDownload(image);
+      addToDownloads(image);
       toast.success("Image downloaded successfully!");
     } catch (error) {
       console.error("Failed to download image:", error);
       toast.error("Failed to download image");
     }
   };
+
   /* download function end */
 
   if (loading === false && images.length === 0) {
@@ -51,12 +64,14 @@ const ImageGrid = ({ images, loading, onImageDownload }) => {
               key={image.value.id}
               className="image-card rounded-xl overflow-hidden cursor-pointer relative group"
             >
-              <Button
-                onClick={() => downloadImage(image)}
-                buttonStyle="absolute bottom-2 right-2 p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-all z-10 disabled:opacity-50  cursor-pointer"
-              >
-                <DownloadSvg />
-              </Button>
+              {route === "download" ? undefined : (
+                <Button
+                  onClick={() => downloadImage(image)}
+                  buttonStyle="absolute bottom-2 right-2 p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-all z-10 disabled:opacity-50  cursor-pointer"
+                >
+                  <DownloadSvg />
+                </Button>
+              )}
               <img
                 src={image.value.url}
                 alt={`Generated: ${image.value.prompt}`}

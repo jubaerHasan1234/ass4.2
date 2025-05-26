@@ -5,6 +5,7 @@ export default function DataProvider({ children }) {
   /* state manegment start */
   const [route, setRoute] = useState("create");
   const [downloadedImages, setDownloadedImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   /* state manegment end */
   return (
@@ -16,6 +17,8 @@ export default function DataProvider({ children }) {
         downloadedImages,
         setDownloadedImages,
         loading,
+        images,
+        setImages,
       }}
     >
       {children}

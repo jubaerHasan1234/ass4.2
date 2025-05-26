@@ -2,18 +2,15 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDataContext } from "../../hook";
 import HTwo from "../Common/HTwo";
-import Spinner from "../Common/Spinner";
 import ImageGrid from "./ImageGrid";
 import Search from "./Search";
 import Setting from "./Setting";
-export default function CreatePage({ onImageDownload }) {
+export default function CreatePage() {
   /* constex api start */
-  const { loading, setLoading } = useDataContext();
+  const { loading, setLoading, images, setImages } = useDataContext();
   /* constex api end */
   /* state manegment start */
   const [prompt, setPrompt] = useState("");
-  const [images, setImages] = useState([]);
-
   const [models, setModels] = useState([]);
   const [settings, setSettings] = useState({
     model: "flux",
@@ -29,7 +26,7 @@ export default function CreatePage({ onImageDownload }) {
       try {
         setSettingLoad(true);
         const response = await fetch("https://image.pollinations.ai/models");
-        console.log(response);
+
         const modelList = await response.json();
         if (response.ok) {
           setSettingLoad(false);
@@ -74,7 +71,7 @@ export default function CreatePage({ onImageDownload }) {
           const img = new Image();
           const timeoutId = setTimeout(() => {
             reject(new Error("Image load timeout"));
-          }, 1000);
+          }, 10000);
 
           img.onload = () => {
             clearTimeout(timeoutId);
@@ -96,7 +93,6 @@ export default function CreatePage({ onImageDownload }) {
       });
 
       const results = await Promise.allSettled(imagePromises);
-      console.log(results);
 
       const successfulImages = results
         .filter((result) => result.status === "fulfilled")
@@ -146,21 +142,24 @@ export default function CreatePage({ onImageDownload }) {
         prompt={prompt}
         loading={loading}
       />
-      {settingLoad ? (
-        <Spinner hightAndWidth={"h-16 w-16 "} />
-      ) : (
+      {
         <Setting
           settings={settings}
           onSettingsChange={setSettings}
           models={models}
           disabled={loading}
+          settingLoad={settingLoad}
+          onHandleKeyPress={handleKeyPress}
         />
-      )}
-      <ImageGrid
-        images={images}
-        loading={loading}
-        onImageDownload={onImageDownload}
-      />
+      }
+      <div>
+        {images.length === 0 ? undefined : (
+          <h3 class="text-zinc-200 mb-4 font-bold text-2xl text-center">
+            Result 🙂
+          </h3>
+        )}
+        <ImageGrid images={images} />
+      </div>
     </main>
   );
 }
