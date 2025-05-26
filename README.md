@@ -9,6 +9,9 @@
 5. Added 'loading animation' for creating an image and 'spinner' inside it.
 6. I don't like having a 'download button' on the download page, so it has been removed, but if you want it, you can download it on the download page by removing the 'route === "download" ' and the condition.
 
+
+
+
 ![ass4.2.png](https://github.com/jubaerHasan1234/ass4.2/blob/c91acfb67526b93b526246b73d0b7a7a74ad6772/ass4.2.png)
 
 
